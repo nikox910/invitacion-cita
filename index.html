@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Quieres salir conmigo?</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.container{
+    width:90%;
+    max-width:500px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    position:relative;
+    z-index:2;
+}
+
+h1{
+    color:#ff4d6d;
+    margin-bottom:20px;
+}
+
+p{
+    margin-bottom:20px;
+    color:#444;
+}
+
+button{
+    border:none;
+    padding:12px 25px;
+    border-radius:10px;
+    font-size:18px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+#si{
+    background:#4CAF50;
+    color:white;
+    margin-right:10px;
+}
+
+#si:hover{
+    transform:scale(1.05);
+}
+
+#no{
+    background:#f44336;
+    color:white;
+}
+
+.hidden{
+    display:none;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.confirmar{
+    background:#ff4d6d;
+    color:white;
+    width:100%;
+    margin-top:10px;
+}
+
+.heart{
+    position:absolute;
+    color:rgba(255,255,255,.7);
+    animation:float 8s linear infinite;
+    user-select:none;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-100px);
+    }
+}
+</style>
+</head>
+<body>
+
+<div id="inicio" class="container">
+    <h1>❤️ Tengo una pregunta ❤️</h1>
+
+    <p>
+        Me preguntaba si te gustaría tener una cita conmigo...
+    </p>
+
+    <button id="si">Sí ❤️</button>
+    <button id="no">No 😅</button>
+</div>
+
+<div id="cita" class="container hidden">
+    <h1>🎉 ¡Sabía que dirías que sí!</h1>
+
+    <p>Ahora elige una fecha y un plan:</p>
+
+    <input type="date" id="fecha">
+
+    <select id="plan">
+        <option value="">Selecciona un plan</option>
+        <option>Cine 🎬</option>
+        <option>Cena 🍝</option>
+        <option>Helados 🍦</option>
+        <option>Paseo 🌅</option>
+        <option>Lo que tú quieras ❤️</option>
+    </select>
+
+    <button class="confirmar" onclick="confirmar()">
+        Confirmar cita
+    </button>
+</div>
+
+<div id="final" class="container hidden">
+    <h1>💖 ¡Cita Confirmada! 💖</h1>
+
+    <p id="resultado"></p>
+
+    <h2>✨ Estoy deseando que llegue ese día ✨</h2>
+</div>
+
+<script>
+
+const botonNo = document.getElementById("no");
+
+function moverBoton(){
+
+    const margen = 100;
+
+    const x = Math.random() * (window.innerWidth - margen);
+    const y = Math.random() * (window.innerHeight - margen);
+
+    botonNo.style.position = "fixed";
+    botonNo.style.left = x + "px";
+    botonNo.style.top = y + "px";
+}
+
+botonNo.addEventListener("mouseover", moverBoton);
+botonNo.addEventListener("touchstart", function(e){
+    e.preventDefault();
+    moverBoton();
+});
+
+document.getElementById("si").addEventListener("click", () => {
+    document.getElementById("inicio").classList.add("hidden");
+    document.getElementById("cita").classList.remove("hidden");
+});
+
+function confirmar(){
+
+    const fecha = document.getElementById("fecha").value;
+    const plan = document.getElementById("plan").value;
+
+    if(!fecha || !plan){
+        alert("Debes seleccionar una fecha y un plan.");
+        return;
+    }
+
+    document.getElementById("cita").classList.add("hidden");
+    document.getElementById("final").classList.remove("hidden");
+
+    document.getElementById("resultado").innerHTML =
+        `Nuestra cita será el <b>${fecha}</b><br><br>
+        Plan elegido: <b>${plan}</b>`;
+}
+
+function crearCorazon(){
+
+    const heart = document.createElement("div");
+
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.fontSize = (20 + Math.random()*30) + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        heart.remove();
+    },8000);
+}
+
+setInterval(crearCorazon,500);
+
+</script>
+
+</body>
+</html>
